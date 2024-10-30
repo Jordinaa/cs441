@@ -1,0 +1,76 @@
+'((REM "quoted" "strings" "will" "not" "contain" "embedded" "newlines")
+  (REM "remarks" "/" "comments" "need" "not" "be" "preserved" "," "as" "they're" "not" "needed" "by" "the" "interpreter")
+  (REM "end" "of" "statement" "indicated" "by" "end" "of" "line" "or" "by" "colon" "separating" "multiple" "statements")
+  (REM "note" "that" "ending" "a" "line" "with" "a" "colon" "with" "no" "following" "statement" "is" "a" "syntax" "error")
+  (STMT (ID "x") (ASSIGN ":=") (OR-EXPR (AND-EXPR (NOT-EXPR (COMPARE-EXPR (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (VALUE (CONSTANT (INT "5")))))))))))
+  (STMT
+   (ID "y")
+   (ASSIGN ":=")
+   (OR-EXPR (AND-EXPR (NOT-EXPR (COMPARE-EXPR (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (ID "x"))) (ADD "+") (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (VALUE (CONSTANT (INT "1"))))))))))))
+  (STMT
+   (ID "z")
+   (ASSIGN ":=")
+   (OR-EXPR
+    (AND-EXPR
+     (NOT-EXPR
+      (COMPARE-EXPR
+       (ADD-EXPR
+        (MULT-EXPR
+         (NEGATE-EXPR
+          (VALUE
+           (LPR "(")
+           ((OR-EXPR (AND-EXPR (NOT-EXPR (COMPARE-EXPR (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (ID "y"))) (SUB "-") (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (VALUE (CONSTANT (INT "2"))))))))))))
+           (RPR ")")))
+         (MULT "*")
+         (MULT-EXPR (NEGATE-EXPR (VALUE (CONSTANT (INT "3"))))))))))))
+  (STMT
+   (ID "A")
+   (ASSIGN ":=")
+   (OR-EXPR
+    (AND-EXPR
+     (NOT-EXPR
+      (COMPARE-EXPR
+       (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (ID "somefunction") (VALUE (LPR "(") ((OR-EXPR (AND-EXPR (NOT-EXPR (COMPARE-EXPR (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (ID "z"))))))))) (RPR ")"))))))))))
+  (STMT
+   (PRINT "PRINT")
+   (PRINT-LIST
+    (OR-EXPR
+     (AND-EXPR
+      (NOT-EXPR
+       (COMPARE-EXPR
+        (ADD-EXPR
+         (MULT-EXPR
+          (NEGATE-EXPR
+           (VALUE
+            (LPR "(")
+            ((OR-EXPR (AND-EXPR (NOT-EXPR (COMPARE-EXPR (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (ID "z")) (MULT "*") (MULT-EXPR (NEGATE-EXPR (VALUE (CONSTANT (INT "2"))))))))))))
+            (RPR ")")))))))))))
+  (STMT (PRINT "PRINT") (PRINT-LIST (OR-EXPR (AND-EXPR (NOT-EXPR (COMPARE-EXPR (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (VALUE (CONSTANT (STRING "\"A = \"")))))))))) (ID-LIST (ID "A"))))
+  (STMT (END "END"))
+  (STMT (DEF "DEF") (ID "somefunction") (LPR "(") (ID-LIST (ID "a")) (RPR ")"))
+  (STMT
+   (WHILE "WHILE")
+   (OR-EXPR (AND-EXPR (NOT-EXPR (COMPARE-EXPR (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (ID "a")))) (LTEQUAL "<=") (COMPARE-EXPR (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (VALUE (CONSTANT (INT "0")))))))))))
+   (DO "DO")
+   ((STMT
+     (ID "a")
+     (ASSIGN ":=")
+     (OR-EXPR (AND-EXPR (NOT-EXPR (COMPARE-EXPR (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (ID "a"))) (ADD "+") (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (VALUE (CONSTANT (INT "10")))))))))))))
+   (ENDWHILE "ENDWHILE"))
+  (REM "just" "some" "fiddling" "around" "to" "test" "the" "language")
+  (STMT
+   (IF "IF")
+   (OR-EXPR (AND-EXPR (NOT-EXPR (COMPARE-EXPR (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (ID "a")))) (GT ">") (COMPARE-EXPR (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (VALUE (CONSTANT (INT "5")))))))))))
+   (THEN "then")
+   ((STMT
+     (ID "a")
+     (ASSIGN ":=")
+     (OR-EXPR (AND-EXPR (NOT-EXPR (COMPARE-EXPR (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (ID "a"))) (ADD "+") (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (VALUE (CONSTANT (INT "2"))))))))))))
+    (STMT
+     (RETURN "RETURN")
+     (EXPR-LIST (OR-EXPR (AND-EXPR (NOT-EXPR (COMPARE-EXPR (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (ID "a")) (MULT "*") (MULT-EXPR (NEGATE-EXPR (VALUE (CONSTANT (INT "3"))))))))))))))
+   (ENDIF "ENDIF"))
+  (STMT (RETURN "RETURN") (EXPR-LIST (OR-EXPR (AND-EXPR (NOT-EXPR (COMPARE-EXPR (ADD-EXPR (MULT-EXPR (NEGATE-EXPR (ID "a"))))))))))
+  (REM "else" "clause")
+  (STMT (ENDDEF "ENDDEF")))
+> 

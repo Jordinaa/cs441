@@ -1,0 +1,64 @@
+- 30-40 multiple choice questions
+---
+- when language was introduced
+	- how well it worked
+	- design goals 
+
+- Steps for compiler
+	- **Source code**
+		- **scanner - lexer**
+		- turns it into a stream of tokens
+		- this is an identifier
+		- semicolon
+		- parenthesis
+			- **parser**
+			- checks it against the grammar 
+			- syntactically correct
+			- does not look at issues of meaning 
+			- right scope etc
+				- **syntax tree or parse tree**
+				- which is a more abstract representation of the program
+					- **semantic analyzer** 
+					- checks all the rules the parser cant
+					- type
+					- scope
+					- dynamically scoped can't do it until runtime (depends on language)
+						- **code generator** - frontier between front end and back end
+							- we could run it through a code optimizer 
+							- not necessary 
+							- assembly code or assembler not in scope of course
+								- **object code**
+									- **linker**
+										- **executable (.exe)**
+- Steps for interpreter
+	- Source code
+		- scanner - lexer
+			- turns it into a stream of tokens
+			- this is an identifier
+			- semicolon
+			- parenthesis
+				- parser
+				- checks it against the grammar 
+				- syntactically correct
+				- does not look at issues of meaning 
+				- right scope etc
+					- syntax tree or parse tree
+					- which is a more abstract representation of the program
+						- **semantic analyzer** 
+						- checks all the rules the parser cant
+						- type
+						- scope
+						- dynamically scoped can't do it until runtime (depends on language)
+							- abstract tree 
+								- **code generator** - frontier between front end and back end
+								- few tree walking routine and interpreter can pick it up from here and we can do a function call
+									- Could we might run it through a code optimizer 
+									- not necessary 
+									- assembly code or assembler not in scope of course
+										- **instead of object code we have java byte code or something**
+											- then intermediate language 
+- same has compiler except instead of code generator
+	- abstract trees
+- instead of object code
+	- byte code
+NOTE: garbage collection bad overhead

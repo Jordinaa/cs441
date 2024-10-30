@@ -70,6 +70,8 @@
               (generate (- n 1)))))
   (generate count))
 
+;; TEST CASES
+
 ;; 4
 (define 4-test (generate-random-integers 4 1 100))
 (displayln "Original list: ")

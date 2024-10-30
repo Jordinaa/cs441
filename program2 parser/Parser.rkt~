@@ -1,0 +1,128 @@
+#lang racket
+
+
+;; Assuming `tokens` is the input list of tokens that the scanner produces.
+
+;; Helper function to match token types
+(define (match token type)
+  (and (pair? token) (eq? (car token) type)))
+
+;; Parsing Functions
+
+;; <Lines> ::= <Statements> NewLine <Lines> | <Statements> NewLine
+(define (parse-lines tokens)
+  (define result (parse-statements tokens))
+  (if result
+      (let ((rest (cdr result)))
+        (if (match (car rest) 'newline)
+            (parse-lines (cdr rest))
+            result))
+      #f))
+
+;; <Statements> ::= <Statement> ':' <Statements> | <Statement>
+(define (parse-statements tokens)
+  (define result (parse-statement tokens))
+  (if result
+      (let ((rest (cdr result)))
+        (if (match (car rest) 'colon)
+            (parse-statements (cdr rest))
+            result))
+      #f))
+
+;; <Statement> ::= DEF ID ( <ID List> ) | ENDDEF | END | IF <Expression> THEN <Statements> ENDIF 
+;;               | ID ':=' <Expression> | ID ( <Expression List> ) | PRINT <Print list> 
+;;               | RETURN <Expression> | WHILE <Expression> DO <Statements> ENDWHILE | Remark
+(define (parse-statement tokens)
+  (match tokens
+    ;; DEF ID ( <ID List> )
+    [(list 'def 'id '(' rest ...)
+     (let ((id-list (parse-id-list rest)))
+       (if id-list
+           (let ((remaining (cdr id-list)))
+             (if (match (car remaining) ')')
+                 (list 'DEF id-list)
+                 #f))
+           #f))]
+    ;; Other statement types can be defined in similar structures
+    [else #f]))
+
+;; <ID List> ::= ID ',' <ID List> | ID
+(define (parse-id-list tokens)
+  (if (match (car tokens) 'id)
+      (let ((rest (cdr tokens)))
+        (if (match (car rest) 'comma)
+            (parse-id-list (cdr rest))
+            tokens))
+      #f))
+
+;; <Expression> ::= <And Exp> OR <Expression> | <And Exp>
+(define (parse-expression tokens)
+  (define and-exp (parse-and-exp tokens))
+  (if and-exp
+      (let ((rest (cdr and-exp)))
+        (if (match (car rest) 'or)
+            (parse-expression (cdr rest))
+            and-exp))
+      #f))
+
+;; <And Exp> ::= <Not Exp> AND <And Exp> | <Not Exp>
+(define (parse-and-exp tokens)
+  (define not-exp (parse-not-exp tokens))
+  (if not-exp
+      (let ((rest (cdr not-exp)))
+        (if (match (car rest) 'and)
+            (parse-and-exp (cdr rest))
+            not-exp))
+      #f))
+
+;; <Not Exp> ::= NOT <Compare Exp> | <Compare Exp>
+(define (parse-not-exp tokens)
+  (if (match (car tokens) 'not)
+      (parse-compare-exp (cdr tokens))
+      (parse-compare-exp tokens)))
+
+;; <Compare Exp> ::= <Add Exp> '=' <Compare Exp> | <Add Exp> '<>' <Compare Exp> | ...
+(define (parse-compare-exp tokens)
+  ;; We would continue parsing for other comparison operators here
+  (define add-exp (parse-add-exp tokens))
+  (if add-exp
+      (let ((rest (cdr add-exp)))
+        (cond
+          [(match (car rest) '=) (parse-compare-exp (cdr rest))]
+          [(match (car rest) '<>) (parse-compare-exp (cdr rest))]
+          [else add-exp]))
+      #f))
+
+;; <Add Exp> ::= <Mult Exp> '+' <Add Exp> | <Mult Exp>
+(define (parse-add-exp tokens)
+  (define mult-exp (parse-mult-exp tokens))
+  (if mult-exp
+      (let ((rest (cdr mult-exp)))
+        (if (match (car rest) 'plus)
+            (parse-add-exp (cdr rest))
+            mult-exp))
+      #f))
+
+;; <Mult Exp> ::= <Negate Exp> '*' <Mult Exp> | <Negate Exp>
+(define (parse-mult-exp tokens)
+  (define negate-exp (parse-negate-exp tokens))
+  (if negate-exp
+      (let ((rest (cdr negate-exp)))
+        (if (match (car rest) 'times)
+            (parse-mult-exp (cdr rest))
+            negate-exp))
+      #f))
+
+;; <Negate Exp> ::= '-' <Value> | <Value>
+(define (parse-negate-exp tokens)
+  (if (match (car tokens) 'minus)
+      (parse-value (cdr tokens))
+      (parse-value tokens)))
+
+;; <Value> ::= '(' <Expression> ')' | ID | ID '(' <Expression List> ')' | <Constant>
+(define (parse-value tokens)
+  (cond
+    ;; Handle each value case accordingly
+    [else #f]))
+
+;; And so on for other parsing rules.

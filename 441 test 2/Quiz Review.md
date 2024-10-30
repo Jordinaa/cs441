@@ -1,0 +1,50 @@
+- one method of parsing a string is to start with a string and identify portions that correspond to the right hand side of some rule in the grammar which are replaced ....
+	- shift reduce parsing - bottom up 
+- one limitation of context free grammars is that there are some rules wed like our programming languages to have that cant be expressed in a context free grammar which of the following our such rules
+	- all of these are examples of rules that cant be expressed in a context free grammar
+		- variables must be declared before they are used
+		- a function must return a value on any control path through the function body
+		- an else should be matched with the neared preceding if
+		- function calls must have correct number and type of parameters
+- one way of building a parser is to provide a separate function for each nonterminal which can then call each other as needed to process the source code this approach is
+	- recursive descent 
+
+---
+- here is a set of cons cells in memory what expression does this represent 
+	- ((a)(b)(c))
+- consider the code
+	- (define (add x x) 
+		- (lambda (y)
+			- (+ x y )))
+	- the function add x returns on parameters that adds its parameter 
+	- the upward FUNARG problem 
+	- upward
+		- returning a function from a function 
+- why have most languages moved away from dynamic scoping
+	- dynamic scoping 
+- some languages allow a function to take a particular class as a parameter that function can then be called using that class or any of its subclasses this is called
+	- interface polymorphism 
+- using same name multiple function definitions where the type signature for each involves a different number or type of parameters is called
+	- function overloading
+	- function overriding (wrong but def)
+		- multiple same names but only one is visible throughout the program 
+- how can a solution be found recursively for some problem
+	- solve the problem for the smallest/simplest instance of the problem. then show how to solve the problem for size n in terms of the solution for size n-1 
+- in a functional language such as scheme or racket we dont have variables rather we assign labels to values the value named by a variable is its
+	- denotation 
+		- is the value thats connected to the variable
+	- binding (wrong)
+		- the act of making that connection 
+- given the following code 
+	- (define (outer x)
+		- (define (inner1 a b)
+			- (define (inner 2 c a) 
+				- (+ a b x))) 
+	- (0 1 ) (1 1) (2 0)
+- one way of improving efficiency is to store the any value we have computer if the value is needed. later we can retrieve the stored value rather than recomputing it this is
+	- memoization 
+		- lazy eval - don't calculate it until we need it 
+	- pass by value (wrong)
+		- pass a copy of the data into a function
+- several functions with the same name only one of which is visible at any particular point in the program is known as 
+	- function overriding 
