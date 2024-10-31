@@ -1,0 +1,7 @@
+10 REM A 
+20 REM B 
+30 REM 400 
+40 if A = 400 REM write C 
+50 if B = 0 REM goto 1000 
+400 C = A + B : return 
+$$
